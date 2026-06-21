@@ -3,235 +3,1175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MAISON DORÉE | Luxury Dining</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lato:wght@300;400&display=swap" rel="stylesheet">
+    
+    <title>NEXORA DIGITAL | Premium 3D Web Experiences</title>
+    <meta name="description" content="NEXORA DIGITAL is a premium digital agency based in Casablanca, Morocco. We build high-performance, visually immersive 3D websites.">
+    <meta name="keywords" content="NEXORA DIGITAL, Web Developer Casablanca, 3D Web Design, Premium Agency">
+    <meta property="og:title" content="NEXORA DIGITAL | Premium Digital Agency">
+    <meta property="og:description" content="Elevate your brand with immersive 3D web experiences built in Casablanca.">
+    <meta property="og:type" content="website">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Syne:wght@700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <link href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css" rel="stylesheet">
+
     <style>
-        :root { --black: #0D0D0D; --gold: #C9A84C; --cream: #F5ECD7; }
-        * { margin: 0; padding: 0; box-sizing: border-box; cursor: none; }
-        body { font-family: 'Lato', sans-serif; background: var(--black); color: var(--cream); overflow-x: hidden; }
-        h1, h2, h3, .serif { font-family: 'Cormorant Garamond', serif; font-weight: 400; }
-        
-        #loader { position: fixed; inset: 0; background: var(--black); z-index: 9999; display: flex; justify-content: center; align-items: center; }
-        .spinner { width: 50px; height: 50px; border: 1px solid var(--gold); animation: flip 2s infinite ease-in-out; }
-        @keyframes flip { 0% { transform: perspective(120px) rotateX(0deg) rotateY(0deg); } 50% { transform: perspective(120px) rotateX(-180deg) rotateY(0deg); } 100% { transform: perspective(120px) rotateX(-180deg) rotateY(-180deg); } }
-        
-        .cursor-dot { width: 8px; height: 8px; background: var(--gold); border-radius: 50%; position: fixed; pointer-events: none; z-index: 10000; transform: translate(-50%, -50%); transition: transform 0.1s ease-out; }
-        .cursor-ring { width: 30px; height: 30px; border: 1px solid rgba(201,168,76,0.5); border-radius: 50%; position: fixed; pointer-events: none; z-index: 9999; transform: translate(-50%, -50%); transition: transform 0.2s ease-out, width 0.2s, height 0.2s; }
+        /* CSS Variables */
+        :root {
+            --bg-dark: #070707;
+            --text-light: #ffffff;
+            --text-muted: #888888;
+            --accent-gold: #b39256;
+            --accent-gold-glow: rgba(179, 146, 86, 0.4);
+            --glass-bg: rgba(25, 25, 25, 0.4);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --whatsapp-green: #25D366;
+            --transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
 
-        nav { position: fixed; width: 100%; padding: 2rem 5%; display: flex; justify-content: space-between; align-items: center; z-index: 100; transition: 0.4s; }
-        nav.scrolled { background: rgba(13,13,13,0.9); backdrop-filter: blur(10px); padding: 1rem 5%; border-bottom: 1px solid rgba(201,168,76,0.2); }
-        .logo { font-size: 2rem; color: var(--gold); text-decoration: none; letter-spacing: 4px; text-transform: uppercase; }
-        .nav-links a { color: var(--cream); text-decoration: none; margin-left: 2rem; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 2px; transition: 0.3s; }
-        .nav-links a:hover { color: var(--gold); }
+        /* Global & Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
 
-        #canvas-container { position: absolute; inset: 0; z-index: 0; opacity: 0.8; pointer-events: none; }
-        .hero { height: 100vh; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; position: relative; z-index: 10; background: radial-gradient(circle at center, transparent 0%, #0D0D0D 80%); }
-        .hero h1 { font-size: 6vw; letter-spacing: 10px; text-transform: uppercase; color: var(--gold); animation: flicker 4s infinite alternate; }
-        @keyframes flicker { 0%, 100% { text-shadow: 0 0 20px rgba(201,168,76,0.2); } 50% { text-shadow: 0 0 40px rgba(201,168,76,0.6); } }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
 
-        /* Sticky Book Button */
-        .btn-sticky { position: fixed; right: -40px; top: 50%; transform: translateY(-50%) rotate(-90deg); background: var(--gold); color: var(--black); padding: 15px 30px; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; z-index: 1000; border: 1px solid var(--gold); transition: 0.3s; cursor: none;}
-        .btn-sticky:hover { background: var(--black); color: var(--gold); }
+        h1, h2, h3, h4, .syne-font {
+            font-family: 'Syne', sans-serif;
+        }
 
-        section { padding: 8rem 5%; position: relative; z-index: 10; }
-        .story-flex { display: flex; align-items: center; gap: 4rem; flex-wrap: wrap; }
-        .story-text { flex: 1; min-width: 300px; }
-        .story-img { flex: 1; min-width: 300px; position: relative; }
-        .story-img img { width: 100%; height: auto; border: 1px solid rgba(201,168,76,0.3); padding: 10px; }
-        .story-img::after { content: ''; position: absolute; inset: 0; background: rgba(201,168,76,0.1); }
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
 
-        .menu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 3rem; margin-top: 4rem; perspective: 1000px; }
-        .menu-card { text-align: center; padding: 2rem; border: 1px solid rgba(255,255,255,0.05); transition: 0.5s; transform-style: preserve-3d; background: rgba(255,255,255,0.02); }
-        .menu-card:hover { border-color: rgba(201,168,76,0.5); transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-        .menu-card img { width: 150px; height: 150px; border-radius: 50%; object-fit: cover; margin-bottom: 1.5rem; border: 2px solid var(--gold); transition: transform 0.5s; }
-        .menu-card:hover img { transform: scale(1.1) rotate(5deg); }
-        .menu-price { color: var(--gold); font-size: 1.5rem; font-family: 'Cormorant Garamond', serif; margin-top: 1rem; }
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
 
-        .chef-quote { padding: 8rem 5%; text-align: center; background: url('https://images.unsplash.com/photo-1600891964092-4316c288032e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80') center/cover fixed; position: relative; }
-        .chef-quote::before { content: ''; position: absolute; inset: 0; background: rgba(13,13,13,0.85); }
-        .quote-text { position: relative; z-index: 1; font-size: 2.5rem; font-style: italic; max-width: 800px; margin: 0 auto; color: var(--cream); line-height: 1.4; }
+        section {
+            padding: 8rem 0;
+            position: relative;
+            z-index: 10;
+        }
 
-        input, select { width: 100%; padding: 15px; margin-bottom: 20px; background: transparent; border: none; border-bottom: 1px solid rgba(201,168,76,0.3); color: var(--cream); font-family: 'Lato', sans-serif; transition: 0.3s; }
-        input:focus, select:focus { outline: none; border-bottom-color: var(--gold); }
-        .btn-gold { background: transparent; color: var(--gold); border: 1px solid var(--gold); padding: 15px 40px; font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; text-transform: uppercase; letter-spacing: 2px; transition: 0.3s; width: 100%; cursor: none; }
-        .btn-gold:hover { background: var(--gold); color: var(--black); }
+        /* Loading Screen */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: var(--bg-dark);
+            z-index: 9999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 1s ease, visibility 1s;
+        }
 
-        .float-btn { position: fixed; bottom: 30px; right: 30px; background: #25D366; color: white; width: 60px; height: 60px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 2rem; text-decoration: none; z-index: 100; animation: pulse 2s infinite; pointer-events: auto;}
-    /* --- RESPONSIVE OVERRIDES --- */
+        .loader-logo {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-light);
+            animation: spin3D 3s infinite linear;
+            transform-style: preserve-3d;
+        }
+        .loader-logo span { color: var(--accent-gold); }
+
+        @keyframes spin3D {
+            0% { transform: perspective(500px) rotateY(0deg); }
+            100% { transform: perspective(500px) rotateY(360deg); }
+        }
+
+        /* Three.js Background Canvas */
+        #bg-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* Glassmorphism Utilities */
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+        }
+
+        /* Navbar */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            transition: var(--transition);
+            padding: 1.5rem 0;
+        }
+
+        header.scrolled {
+            padding: 0.5rem 0;
+            background: rgba(7, 7, 7, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--glass-border);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            z-index: 1001;
+        }
+        .logo span { color: var(--accent-gold); }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+        }
+
+        .nav-links a {
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--accent-gold);
+        }
+
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            z-index: 1001;
+            font-size: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-block;
+            padding: 1rem 2.5rem;
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-radius: 4px;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid transparent;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .btn-gold {
+            background: var(--accent-gold);
+            color: var(--bg-dark);
+            box-shadow: 0 0 20px var(--accent-gold-glow);
+        }
+
+        .btn-gold:hover {
+            background: transparent;
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            box-shadow: 0 0 30px var(--accent-gold-glow);
+            transform: translateY(-3px);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border-color: var(--glass-border);
+            color: var(--text-light);
+        }
+
+        .btn-outline:hover {
+            border-color: var(--accent-gold);
+            color: var(--accent-gold);
+            transform: translateY(-3px);
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 80px;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 10;
+        }
+
+        .hero-title {
+            font-size: 5rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            will-change: transform, opacity;
+            text-shadow: 0 10px 30px rgba(0,0,0,0.8);
+        }
+
+        .hero-title span {
+            color: transparent;
+            -webkit-text-stroke: 1px var(--accent-gold);
+        }
+
+        .hero-desc {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            margin-bottom: 3rem;
+            max-width: 600px;
+            margin-inline: auto;
+        }
+
+        /* Section Titles */
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-subtitle {
+            color: var(--accent-gold);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-transform: uppercase;
+        }
+
+        /* About Section */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-img-wrapper {
+            position: relative;
+            border-radius: 16px;
+            padding: 1rem;
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+            border: 1px solid var(--glass-border);
+            transform-style: preserve-3d;
+            perspective: 1000px;
+        }
+
+        .about-img {
+            width: 100%;
+            height: 400px;
+            background: url('https://images.unsplash.com/photo-1550751827-4bd374c3f58b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80') center/cover;
+            border-radius: 12px;
+            filter: grayscale(100%);
+            transition: var(--transition);
+        }
+
+        .about-img-wrapper:hover .about-img {
+            filter: grayscale(0%);
+            transform: translateZ(20px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+
+        .skills-container {
+            margin-top: 2rem;
+        }
+
+        .skill-item {
+            margin-bottom: 1.5rem;
+        }
+
+        .skill-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+            font-family: 'Syne', sans-serif;
+            text-transform: uppercase;
+        }
+
+        .skill-bar {
+            width: 100%;
+            height: 6px;
+            background: var(--glass-bg);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .skill-progress {
+            height: 100%;
+            background: var(--accent-gold);
+            width: 0; /* Animated via JS/AOS */
+            transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow: 0 0 10px var(--accent-gold-glow);
+        }
+
+        /* Services Section (3D Tilt Cards) */
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            perspective: 1000px;
+        }
+
+        .service-card {
+            padding: 3rem 2rem;
+            text-align: center;
+            transform-style: preserve-3d;
+            transition: transform 0.1s;
+            cursor: pointer;
+        }
+
+        .service-icon {
+            font-size: 2.5rem;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+            transform: translateZ(50px);
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            transform: translateZ(30px);
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            transform: translateZ(20px);
+        }
+
+        /* Portfolio Section */
+        .portfolio-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: transparent;
+            border: 1px solid var(--glass-border);
+            color: var(--text-light);
+            padding: 0.5rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-family: 'Syne', sans-serif;
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: var(--bg-dark);
+        }
+
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .portfolio-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 16/9;
+            cursor: pointer;
+        }
+
+        .portfolio-img {
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .portfolio-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 2rem;
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .portfolio-item:hover .portfolio-img {
+            transform: scale(1.05);
+        }
+
+        .portfolio-item:hover .portfolio-overlay {
+            opacity: 1;
+        }
+
+        .portfolio-overlay h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            transform: translateY(20px);
+            transition: transform 0.4s;
+        }
+
+        .portfolio-overlay p {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            transform: translateY(20px);
+            transition: transform 0.4s 0.1s;
+        }
+
+        .portfolio-item:hover .portfolio-overlay h3,
+        .portfolio-item:hover .portfolio-overlay p {
+            transform: translateY(0);
+        }
+
+        /* Testimonials Carousel */
+        .testimonials {
+            overflow: hidden;
+            padding: 6rem 0;
+        }
+
+        .carousel-container {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .testimonial-slide {
+            display: none;
+            animation: fadeIn 0.5s;
+        }
+
+        .testimonial-slide.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .quote-icon {
+            font-size: 3rem;
+            color: var(--glass-border);
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-text {
+            font-size: 1.5rem;
+            font-style: italic;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .testimonial-author {
+            color: var(--accent-gold);
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .carousel-controls {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        .carousel-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--glass-border);
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .carousel-dot.active {
+            background: var(--accent-gold);
+            box-shadow: 0 0 10px var(--accent-gold-glow);
+        }
+
+        /* Contact Section */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info-card {
+            padding: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .contact-info-card:hover {
+            border-color: var(--accent-gold);
+            transform: translateX(10px);
+        }
+
+        .contact-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(179, 146, 86, 0.1);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+        }
+
+        .contact-details h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .contact-details p {
+            color: var(--text-muted);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--glass-border);
+        }
+
+        /* Footer */
+        footer {
+            border-top: 1px solid var(--glass-border);
+            padding: 3rem 0;
+            text-align: center;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .footer-logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .social-links a {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            background: var(--accent-gold);
+            border-color: var(--accent-gold);
+            color: var(--bg-dark);
+            transform: translateY(-3px);
+        }
+
+        .copyright {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Floating WhatsApp Button */
+        .whatsapp-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--whatsapp-green);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            animation: pulse 2s infinite;
+            transition: var(--transition);
+        }
+
+        .whatsapp-float:hover {
+            transform: scale(1.1);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
+            70% { box-shadow: 0 0 0 20px rgba(37, 211, 102, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .hero-title { font-size: 3.5rem; }
+            .about-grid, .contact-grid { grid-template-columns: 1fr; }
+            .services-grid { grid-template-columns: repeat(2, 1fr); }
+            .map-container { min-height: 300px; }
+        }
+
+        @media (max-width: 768px) {
+            .hamburger { display: block; }
+            .nav-links {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 70%;
+                height: 100vh;
+                background: rgba(10,10,10,0.95);
+                backdrop-filter: blur(20px);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                transition: var(--transition);
+                border-left: 1px solid var(--glass-border);
+            }
+            .nav-links.active { right: 0; }
+            .hero-title { font-size: 2.5rem; }
+            .services-grid, .portfolio-grid { grid-template-columns: 1fr; }
+            section { padding: 5rem 0; }
+            .whatsapp-float { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 1.5rem; }
+        }
+        /* --- RESPONSIVE OVERRIDES --- */
 img { max-width: 100%; height: auto; display: block; }
-section { padding: clamp(4rem, 10vw, 8rem) 5%; }
-.hero h1 { font-size: clamp(3rem, 10vw, 8rem); }
-.story-flex, .input-group { flex-wrap: wrap; gap: 2rem; }
-.story-text, .story-img { flex: 1; min-width: min(100%, 300px); }
-.menu-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
-input, select { flex: 1; min-width: 100% !important; }
-nav { flex-wrap: wrap; padding: clamp(1rem, 3vw, 2rem) 5%; gap: 1rem; }
-.quote-text { font-size: clamp(1.5rem, 5vw, 2.5rem); }
-.float-btn { width: clamp(50px, 8vw, 60px); height: clamp(50px, 8vw, 60px); font-size: clamp(1.5rem, 4vw, 2rem); }
+.container { width: 100%; padding: 0 clamp(1rem, 5vw, 2rem); }
+section { padding: clamp(4rem, 10vw, 8rem) 0; }
+.hero-title { font-size: clamp(2.5rem, 8vw, 5rem); }
+.hero-desc { font-size: clamp(1rem, 3vw, 1.25rem); }
+.section-title { font-size: clamp(2rem, 5vw, 3rem); }
+.portfolio-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); }
 
 @media (max-width: 768px) {
-    .btn-sticky { top: auto; bottom: 0; right: 0; transform: none; width: 100%; text-align: center; position: fixed; z-index: 1001; }
-    .nav-links { display: none; }
-    section { padding-bottom: 100px; } /* Prevents bottom sticky button from covering form/footer */
+    .about-content, .contact-grid, .stats-grid, .about-grid { grid-template-columns: 1fr !important; gap: 2rem; }
+    .hero-btns, .contact-buttons { display: flex; flex-direction: column; width: 100%; }
+    .hero-btns .btn, .contact-buttons a { width: 100%; text-align: center; }
+    .nav-links { display: none; } /* Hides desktop links on mobile to prevent overlap */
+    .hamburger { display: block; }
+    .portfolio-overlay { opacity: 1; background: linear-gradient(to top, rgba(0,0,0,0.9) 20%, transparent); }
+    .portfolio-overlay h3, .portfolio-overlay p { transform: none; }
 }
     </style>
 </head>
 <body>
-    <div id="loader"><div class="spinner"></div></div>
-    <div class="cursor-dot" id="cursor-dot"></div>
-    <div class="cursor-ring" id="cursor-ring"></div>
-    <div id="canvas-container"></div>
 
-    <nav id="navbar">
-        <a href="#" class="logo serif">Maison Dorée</a>
-        <div class="nav-links">
-            <a href="index.html">Portfolio</a>
-            <a href="#menu">Menu</a>
-            <a href="#reservations">Reservations</a>
+    <div id="loader">
+        <div class="loader-logo syne-font">NEXORA<span>.</span></div>
+    </div>
+
+    <canvas id="bg-canvas"></canvas>
+
+    <a href="https://wa.me/212701559357" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="#home" class="logo syne-font">NEXORA<span>.</span>DIGITAL</a>
+                <div class="nav-links">
+                    <a href="#home" class="nav-link active">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#services" class="nav-link">Services</a>
+                    <a href="#portfolio" class="nav-link">Work</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                </div>
+                <div class="hamburger">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
         </div>
-    </nav>
-
-    <a href="#reservations" class="btn-sticky">Book a Table</a>
-
-    <header class="hero">
-        <h1 class="serif" data-aos="fade-up" data-aos-duration="2000">Maison Dorée</h1>
-        <p data-aos="fade-up" data-aos-delay="500" style="font-size: 1.2rem; letter-spacing: 5px; text-transform: uppercase; margin-top: 2rem;">A Symphony of Taste</p>
     </header>
 
-    <section id="story">
-        <div class="story-flex">
-            <div class="story-text" data-aos="fade-right">
-                <span style="color: var(--gold); letter-spacing: 3px; text-transform: uppercase; font-size: 0.8rem;">Our Heritage</span>
-                <h2 class="serif" style="font-size: 3.5rem; margin: 1rem 0 2rem; color: var(--gold);">Culinary Excellence in Casablanca</h2>
-                <p style="line-height: 1.8; color: #ccc;">Experience the harmonious blend of classic French techniques and vibrant Moroccan flavors. Set within a meticulously restored palace, Maison Dorée offers an atmosphere of unmatched elegance and a menu crafted for the connoisseur.</p>
-            </div>
-            <div class="story-img" data-aos="fade-left">
-                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Restaurant Interior">
+    <section id="home" class="hero">
+        <div class="container hero-content">
+            <h1 class="hero-title syne-font">Engineering <span>Immersive</span> Digital Realities</h1>
+            <p class="hero-desc">We build premium, interactive websites that captivate audiences and drive elite business growth in Casablanca and beyond.</p>
+            <div class="hero-btns" style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#portfolio" class="btn btn-gold">View Portfolio</a>
+                <a href="#contact" class="btn btn-outline">Start Project</a>
             </div>
         </div>
     </section>
 
-    <section id="menu" style="background: #111;">
-        <div style="text-align: center;" data-aos="fade-up">
-            <h2 class="serif" style="font-size: 3.5rem; color: var(--gold);">Signature Menu</h2>
-            <p style="letter-spacing: 2px; color: #888; text-transform: uppercase; font-size: 0.8rem; margin-top: 1rem;">Curated by Chef Laurent</p>
-        </div>
-        <div class="menu-grid">
-            <div class="menu-card" data-aos="fade-up">
-                <img src="https://images.unsplash.com/photo-1588168333986-5078d3ae3976?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Dish 1">
-                <h3 class="serif" style="font-size: 1.8rem;">Saffron Scallops</h3>
-                <p style="color: #aaa; margin-top: 1rem; font-size: 0.9rem;">Pan-seared Hokkaido scallops with Moroccan saffron emulsion and black caviar.</p>
-                <div class="menu-price">$45</div>
+    <section id="about">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-subtitle">The Architect</span>
+                <h2 class="section-title syne-font">About Me</h2>
             </div>
-            <div class="menu-card" data-aos="fade-up" data-aos-delay="100">
-                <img src="https://images.unsplash.com/photo-1546833999-b9f581a1996d?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Wagyu & Truffle">
-                <h3 class="serif" style="font-size: 1.8rem;">Wagyu & Truffle</h3>
-                <p style="color: #aaa; margin-top: 1rem; font-size: 0.9rem;">A5 Wagyu beef tenderloin, smoked eggplant purée, and shaved Périgord truffle.</p>
-                <div class="menu-price">$120</div>
-            </div>
-            <div class="menu-card" data-aos="fade-up" data-aos-delay="200">
-                <img src="https://images.unsplash.com/photo-1551024601-bec78aea704b?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80" alt="Golden Mille-Feuille">
-                <h3 class="serif" style="font-size: 1.8rem;">Golden Mille-Feuille</h3>
-                <p style="color: #aaa; margin-top: 1rem; font-size: 0.9rem;">Caramelized puff pastry, orange blossom vanilla cream, topped with 24k gold leaf.</p>
-                <div class="menu-price">$28</div>
+            
+            <div class="about-grid">
+                <div class="about-img-wrapper glass-panel" data-aos="fade-right">
+                    <div class="about-img"></div>
+                </div>
+                
+                <div class="about-text" data-aos="fade-left">
+                    <h3 class="syne-font" style="font-size: 2rem; margin-bottom: 1rem;">Computer Science Student & Digital Developer</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Based in Casablanca, Morocco, I specialize in combining logical software engineering with hyper-creative frontend design. I transform standard corporate identities into premium 3D web experiences.</p>
+                    
+                    <div class="skills-container">
+                        <div class="skill-item">
+                            <div class="skill-info"><span>Web Development (HTML/CSS/JS)</span> <span>95%</span></div>
+                            <div class="skill-bar"><div class="skill-progress" data-width="95%"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span>3D & Animations (GSAP/Three.js)</span> <span>85%</span></div>
+                            <div class="skill-bar"><div class="skill-progress" data-width="85%"></div></div>
+                        </div>
+                        <div class="skill-item">
+                            <div class="skill-info"><span>UI/UX Design</span> <span>90%</span></div>
+                            <div class="skill-bar"><div class="skill-progress" data-width="90%"></div></div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
 
-    <section class="chef-quote">
-        <h2 class="quote-text serif" data-aos="zoom-in">"Cooking is not merely about feeding the body, but elevating the soul. Every plate is a canvas of our passion."</h2>
-        <p style="position: relative; z-index: 1; color: var(--gold); letter-spacing: 3px; text-transform: uppercase; margin-top: 2rem;">— Head Chef</p>
-    </section>
+    <section id="services">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-subtitle">What We Do</span>
+                <h2 class="section-title syne-font">Premium Services</h2>
+            </div>
 
-    <section id="reservations" style="max-width: 800px; margin: 0 auto;">
-        <div style="text-align: center; margin-bottom: 3rem;" data-aos="fade-up">
-            <h2 class="serif" style="font-size: 3.5rem; color: var(--gold);">Reservations</h2>
-            <p style="color: #ccc; margin-top: 1rem;">Secure your table for an unforgettable evening.</p>
+            <div class="services-grid">
+                <div class="service-card glass-panel tilt-card" data-aos="fade-up" data-aos-delay="0">
+                    <i class="fas fa-cube service-icon"></i>
+                    <h3 class="syne-font">3D Web Experiences</h3>
+                    <p>Immersive WebGL and Three.js integrations that make your brand literally jump off the screen.</p>
+                </div>
+                
+                <div class="service-card glass-panel tilt-card" data-aos="fade-up" data-aos-delay="100">
+                    <i class="fas fa-laptop-code service-icon"></i>
+                    <h3 class="syne-font">Custom Development</h3>
+                    <p>High-performance, purely coded websites engineered for speed, security, and scalability.</p>
+                </div>
+
+                <div class="service-card glass-panel tilt-card" data-aos="fade-up" data-aos-delay="200">
+                    <i class="fas fa-mobile-alt service-icon"></i>
+                    <h3 class="syne-font">Responsive UI/UX</h3>
+                    <p>Flawless mobile-first interfaces tailored for intuitive user journeys and high conversion rates.</p>
+                </div>
+            </div>
         </div>
-        <form data-aos="fade-up" data-aos-delay="100">
-            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
-                <input type="text" placeholder="Full Name" style="flex: 1; min-width: 250px;">
-                <input type="email" placeholder="Email Address" style="flex: 1; min-width: 250px;">
-            </div>
-            <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
-                <input type="date" style="flex: 1; min-width: 250px; color-scheme: dark;">
-                <select style="flex: 1; min-width: 250px;">
-                    <option value="" disabled selected>Number of Guests</option>
-                    <option value="1">1 Person</option><option value="2">2 People</option>
-                    <option value="3">3 People</option><option value="4">4+ People</option>
-                </select>
-            </div>
-            <button type="button" class="btn-gold" style="margin-top: 2rem;">Confirm Request</button>
-        </form>
     </section>
 
-    <a href="mailto:hammouda.bouhlal06@gmail.com" class="float-btn" style="bottom: 100px; background: var(--gold); animation: none; color: var(--black);"><i class="fas fa-envelope"></i></a>
-    <a href="https://wa.me/212701559357" target="_blank" class="float-btn"><i class="fab fa-whatsapp"></i></a>
+    <section id="portfolio">
+    <div class="container">
+        <div class="section-header" data-aos="fade-up">
+            <span class="section-subtitle">Selected Works</span>
+            <h2 class="section-title syne-font">Digital Portfolio</h2>
+        </div>
 
-    <!-- Scripts -->
+<!-- FILTER BUTTONS -->
+<div class="portfolio-filters" data-aos="fade-up">
+    <button class="filter-btn active" data-filter="all">All</button>
+    <button class="filter-btn" data-filter="3d">3D Sites</button>
+    <button class="filter-btn" data-filter="corporate">Corporate</button>
+    <button class="filter-btn" data-filter="ecommerce">E-Commerce</button>
+    <!-- NEW FILTERS ADDED -->
+    <button class="filter-btn" data-filter="fitness">Fitness</button>
+    <button class="filter-btn" data-filter="hospitality">Hospitality</button>
+</div>
+
+<!-- PORTFOLIO CARDS -->
+<div class="portfolio-grid">
+    <!-- Project 1: NEXORA Architecture -->
+    <div class="portfolio-item glass-panel" data-category="3d corporate" data-aos="fade-up">
+        <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 1" class="portfolio-img">
+        <div class="portfolio-overlay">
+            <h3 class="syne-font">NEXORA Architecture</h3>
+            <p>3D Corporate Platform</p>
+            <div style="margin-top: 1rem; display: flex; gap: 10px;">
+                <a href="https://projet0-zeta.vercel.app/" class="filter-btn" style="text-decoration:none; padding: 5px 15px; font-size: 0.75rem;">View Live Site</a>
+                <a href="#" class="filter-btn" style="text-decoration:none; padding: 5px 15px; font-size: 0.75rem; border-color: var(--accent-gold); color: var(--accent-gold);">Case Study</a>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Project 2: Luxe Store -->
+    <div class="portfolio-item glass-panel" data-category="ecommerce" data-aos="fade-up" data-aos-delay="100">
+        <img src="https://images.unsplash.com/photo-1555421689-491a97ff2040?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 2" class="portfolio-img">
+        <div class="portfolio-overlay">
+            <h3 class="syne-font">Luxe Store</h3>
+            <p>High-End E-Commerce</p>
+            <div style="margin-top: 1rem; display: flex; gap: 10px;">
+                <a href="project2.html" class="filter-btn" style="text-decoration:none; padding: 5px 15px; font-size: 0.75rem;">View Live Site</a>
+                <a href="#" class="filter-btn" style="text-decoration:none; padding: 5px 15px; font-size: 0.75rem; border-color: var(--accent-gold); color: var(--accent-gold);">Case Study</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project 3: IRON BEAST Gym -->
+    <div class="portfolio-item glass-panel" data-category="fitness 3d" data-aos="fade-up">
+        <img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 3" class="portfolio-img">
+        <div class="portfolio-overlay">
+            <h3 class="syne-font">IRON BEAST Gym</h3>
+            <p>Premium Fitness Facility</p>
+            <div style="margin-top: 1rem; display: flex; gap: 10px;">
+                <!-- Link to project3.html -->
+                <a href="project3.html" class="filter-btn" style="text-decoration:none; padding: 5px 15px; font-size: 0.75rem;">View Live Site</a>
+                <a href="#" class="filter-btn" style="text-decoration:none; padding: 5px 15px; font-size: 0.75rem; border-color: var(--accent-gold); color: var(--accent-gold);">Case Study</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Project 4: MAISON DORÉE Restaurant -->
+    <div class="portfolio-item glass-panel" data-category="hospitality" data-aos="fade-up" data-aos-delay="100">
+        <img src="https://images.unsplash.com/photo-1514933651103-005eec06c04b?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="Project 4" class="portfolio-img">
+        <div class="portfolio-overlay">
+            <h3 class="syne-font">Maison Dorée</h3>
+            <p>Luxury Fine Dining</p>
+            <div style="margin-top: 1rem; display: flex; gap: 10px;">
+                <!-- Link to project4.html -->
+                <a href="project4.html" class="filter-btn" style="text-decoration:none; padding: 5px 15px; font-size: 0.75rem;">View Live Site</a>
+                <a href="#" class="filter-btn" style="text-decoration:none; padding: 5px 15px; font-size: 0.75rem; border-color: var(--accent-gold); color: var(--accent-gold);">Case Study</a>
+            </div>
+        </div>
+    </div>
+</div>
+    </div>
+</section>
+
+    <section id="contact">
+        <div class="container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-subtitle">Initiate</span>
+                <h2 class="section-title syne-font">Let's Collaborate</h2>
+            </div>
+
+            <div class="contact-grid">
+                <div class="contact-info" data-aos="fade-right">
+                    <p style="margin-bottom: 2rem; color: var(--text-muted); font-size: 1.1rem;">Ready to build a $5000+ agency-grade web presence? Reach out directly to discuss your project requirements and technical architecture.</p>
+                    
+                    <a href="https://wa.me/212701559357" target="_blank" class="glass-panel contact-info-card">
+                        <div class="contact-icon"><i class="fab fa-whatsapp"></i></div>
+                        <div class="contact-details">
+                            <h4 class="syne-font">WhatsApp</h4>
+                            <p>+212 701 55 93 57</p>
+                        </div>
+                    </a>
+
+                    <a href="mailto:nexora_digital03@gmail.com" class="glass-panel contact-info-card">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div class="contact-details">
+                            <h4 class="syne-font">Email Direct</h4>
+                            <p>nexora_digital03@gmail.com</p>
+                        </div>
+                    </a>
+
+                    <div class="glass-panel contact-info-card">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div class="contact-details">
+                            <h4 class="syne-font">Headquarters</h4>
+                            <p>Casablanca, Morocco</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="map-wrapper" data-aos="fade-left">
+                    <div class="map-container glass-panel">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d106376.56000595269!2d-7.669394628318218!3d33.5731104!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xda7cd4778aa113b%3A0xb06c1d84f310fd3!2sCasablanca%2C%20Morocco!5e0!3m2!1sen!2sus!4v1700000000000!5m2!1sen!2sus" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <h2 class="footer-logo syne-font">NEXORA<span>.</span>DIGITAL</h2>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="#"><i class="fab fa-github"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+            <p class="copyright">&copy; 2026 NEXORA DIGITAL. Engineered in Casablanca. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
     <script>
-        window.addEventListener('load', () => { document.getElementById('loader').style.display = 'none'; AOS.init({ duration: 1000, once: true }); });
-
-        // Custom Cursor
-        const dot = document.getElementById('cursor-dot');
-        const ring = document.getElementById('cursor-ring');
-        document.addEventListener('mousemove', e => {
-            dot.style.left = e.clientX + 'px'; dot.style.top = e.clientY + 'px';
-            setTimeout(() => { ring.style.left = e.clientX + 'px'; ring.style.top = e.clientY + 'px'; }, 50);
-        });
-        document.querySelectorAll('a, button, .menu-card').forEach(el => {
-            el.addEventListener('mouseenter', () => { ring.style.width = '50px'; ring.style.height = '50px'; ring.style.backgroundColor = 'rgba(201,168,76,0.1)'; });
-            el.addEventListener('mouseleave', () => { ring.style.width = '30px'; ring.style.height = '30px'; ring.style.backgroundColor = 'transparent'; });
-        });
-
-        // Navbar scroll
-        window.addEventListener('scroll', () => {
-            if(window.scrollY > 50) document.getElementById('navbar').classList.add('scrolled');
-            else document.getElementById('navbar').classList.remove('scrolled');
+        // 1. Loading Screen & GSAP Initial Animations
+        window.addEventListener('load', () => {
+            const loader = document.getElementById('loader');
+            loader.style.opacity = '0';
+            setTimeout(() => {
+                loader.style.visibility = 'hidden';
+                
+                // GSAP Hero Animation
+                gsap.from(".hero-title", { duration: 1.5, y: 100, opacity: 0, ease: "power4.out" });
+                gsap.from(".hero-desc", { duration: 1.5, y: 50, opacity: 0, ease: "power4.out", delay: 0.3 });
+                gsap.from(".hero-btns", { duration: 1.5, y: 50, opacity: 0, ease: "power4.out", delay: 0.6 });
+            }, 500);
         });
 
-        // Three.js Floating Gold Particles + Abstract Plate
+        // 2. Initialize AOS (Animate on Scroll)
+        AOS.init({
+            duration: 1000,
+            once: true,
+            offset: 100,
+        });
+
+        // 3. Three.js Particle/Starfield Background
+        const canvas = document.getElementById('bg-canvas');
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        // Fog to blend particles into the dark background depth
+        scene.fog = new THREE.FogExp2(0x070707, 0.001);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 2000);
+        camera.position.z = 500;
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('canvas-container').appendChild(renderer.domElement);
+        renderer.setPixelRatio(window.devicePixelRatio);
 
-        // Particles
-        const geo = new THREE.BufferGeometry();
-        const pos = new Float32Array(500 * 3);
-        for(let i=0; i<1500; i++) { pos[i] = (Math.random() - 0.5) * 15; }
-        geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-        const mat = new THREE.PointsMaterial({ size: 0.05, color: 0xC9A84C, transparent: true, opacity: 0.6, blending: THREE.AdditiveBlending });
-        const particles = new THREE.Points(geo, mat);
-        scene.add(particles);
+        // Create Particles
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 1500;
+        const posArray = new Float32Array(particlesCount * 3);
 
-        // Abstract Gold Ring (Plate representation)
-        const ringGeo = new THREE.TorusGeometry(3, 0.05, 16, 100);
-        const ringMat = new THREE.MeshBasicMaterial({ color: 0xC9A84C, wireframe: true, transparent: true, opacity: 0.2 });
-        const torus = new THREE.Mesh(ringGeo, ringMat);
-        torus.rotation.x = Math.PI / 2 + 0.2;
-        scene.add(torus);
+        for(let i = 0; i < particlesCount * 3; i++) {
+            // Spread particles across a wide area
+            posArray[i] = (Math.random() - 0.5) * 2000;
+        }
 
-        camera.position.z = 5;
-        
-        let mouseX = 0, mouseY = 0;
-        document.addEventListener('mousemove', e => { mouseX = (e.clientX / window.innerWidth) * 2 - 1; mouseY = -(e.clientY / window.innerHeight) * 2 + 1; });
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 3,
+            color: 0xb39256, // Gold accent color
+            transparent: true,
+            opacity: 0.6,
+            blending: THREE.AdditiveBlending
+        });
 
-        function animate() {
-            requestAnimationFrame(animate);
-            particles.rotation.y += 0.002; particles.position.y = Math.sin(Date.now() * 0.001) * 0.2;
-            torus.rotation.z += 0.001;
-            camera.position.x += (mouseX * 0.5 - camera.position.x) * 0.05;
-            camera.position.y += (mouseY * 0.5 - camera.position.y) * 0.05;
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // Mouse interaction for parallax
+        let mouseX = 0;
+        let mouseY = 0;
+        document.addEventListener('mousemove', (event) => {
+            mouseX = event.clientX / window.innerWidth - 0.5;
+            mouseY = event.clientY / window.innerHeight - 0.5;
+        });
+
+        // Animation Loop
+        const clock = new THREE.Clock();
+        function animateThreeJS() {
+            requestAnimationFrame(animateThreeJS);
+            const elapsedTime = clock.getElapsedTime();
+            
+            // Slow rotation
+            particlesMesh.rotation.y = elapsedTime * 0.05;
+            particlesMesh.rotation.x = elapsedTime * 0.02;
+
+            // Parallax effect
+            camera.position.x += (mouseX * 500 - camera.position.x) * 0.05;
+            camera.position.y += (-mouseY * 500 - camera.position.y) * 0.05;
             camera.lookAt(scene.position);
+
             renderer.render(scene, camera);
         }
-        animate();
+        animateThreeJS();
+
+        // Handle Resize
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // 4. Navbar Scroll Effect & Mobile Menu
+        const header = document.getElementById('header');
+        const hamburger = document.querySelector('.hamburger');
+        const navLinks = document.querySelector('.nav-links');
+        const navItems = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) header.classList.add('scrolled');
+            else header.classList.remove('scrolled');
+            
+            // Highlight active section link
+            let current = '';
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (window.scrollY >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href').includes(current)) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = hamburger.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navLinks.classList.remove('active');
+                hamburger.querySelector('i').classList.add('fa-bars');
+                hamburger.querySelector('i').classList.remove('fa-times');
+            });
+        });
+
+        // 5. 3D Tilt Effect on Service Cards (Vanilla JS)
+        const tiltCards = document.querySelectorAll('.tilt-card');
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -15; // Max 15deg
+                const rotateY = ((x - centerX) / centerX) * 15;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+            });
+        });
+
+        // 6. Animate Skill Bars on Scroll using Intersection Observer
+        const skillSection = document.getElementById('about');
+        const progressBars = document.querySelectorAll('.skill-progress');
+        let animated = false;
+
+        const observer = new IntersectionObserver((entries) => {
+            if(entries[0].isIntersecting && !animated) {
+                progressBars.forEach(bar => {
+                    bar.style.width = bar.getAttribute('data-width');
+                });
+                animated = true;
+            }
+        }, { threshold: 0.5 });
+        observer.observe(skillSection);
+
+        // 7. Portfolio Filtering
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove active class
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                const filterValue = btn.getAttribute('data-filter');
+                
+                portfolioItems.forEach(item => {
+                    if(filterValue === 'all' || item.getAttribute('data-category').includes(filterValue)) {
+                        item.style.display = 'block';
+                        setTimeout(() => { item.style.opacity = '1'; item.style.transform = 'scale(1)'; }, 50);
+                    } else {
+                        item.style.opacity = '0';
+                        item.style.transform = 'scale(0.8)';
+                        setTimeout(() => { item.style.display = 'none'; }, 400);
+                    }
+                });
+                
+                // Re-trigger AOS refresh on layout change
+                setTimeout(() => AOS.refresh(), 500);
+            });
+        });
+
+        // 8. Testimonial Carousel
+        const slides = document.querySelectorAll('.testimonial-slide');
+        const dots = document.querySelectorAll('.carousel-dot');
+        let currentSlide = 0;
+
+        function showSlide(n) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            slides[n].classList.add('active');
+            dots[n].classList.add('active');
+            currentSlide = n;
+        }
+
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => showSlide(index));
+        });
+
+        // Auto slide
+        setInterval(() => {
+            let next = (currentSlide + 1) % slides.length;
+            showSlide(next);
+        }, 6000);
+
     </script>
 </body>
 </html>
